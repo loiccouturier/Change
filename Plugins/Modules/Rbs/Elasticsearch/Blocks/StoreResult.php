@@ -37,7 +37,7 @@ class StoreResult extends Block
 		$parameters->addParameterMeta('displayPrices');
 		$parameters->addParameterMeta('displayPricesWithTax');
 
-		$parameters->addParameterMeta('productListId');
+		$parameters->addParameterMeta(static::DOCUMENT_TO_DISPLAY_PROPERTY_NAME);
 		$parameters->addParameterMeta('redirectUrl');
 
 		$parameters->setNoCache();
@@ -102,9 +102,20 @@ class StoreResult extends Block
 			}
 		}
 
-
-
 		return $parameters;
+	}
+
+	/**
+	 * @param \Change\Documents\AbstractDocument $document
+	 * @return boolean
+	 */
+	protected function isValidDocument($document)
+	{
+		if ($document instanceof \Rbs\Catalog\Documents\ProductList && $document->activated())
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -155,7 +166,7 @@ class StoreResult extends Block
 		}
 
 		$parameters = $event->getBlockParameters();
-		$productListId = $parameters->getParameter('productListId');
+		$productListId = $parameters->getParameter(static::DOCUMENT_TO_DISPLAY_PROPERTY_NAME);
 		$productList = null;
 		if ($productListId !== null)
 		{

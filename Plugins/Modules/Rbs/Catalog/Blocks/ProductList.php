@@ -29,6 +29,8 @@ class ProductList extends Block
 		$parameters->addParameterMeta('useCurrentSectionProductList');
 		$parameters->addParameterMeta('conditionId');
 		$parameters->addParameterMeta('webStoreId');
+		$parameters->addParameterMeta('billingAreaId');
+		$parameters->addParameterMeta('zone');
 		$parameters->addParameterMeta('contextualUrls', true);
 		$parameters->addParameterMeta('itemsPerLine', 3);
 		$parameters->addParameterMeta('itemsPerPage', 9);
@@ -83,10 +85,24 @@ class ProductList extends Block
 				$parameters->setParameterValue('displayPrices', $webStore->getDisplayPrices());
 				$parameters->setParameterValue('displayPricesWithTax', $webStore->getDisplayPricesWithTax());
 			}
+
+			$billingArea = $commerceServices->getContext()->getBillingArea();
+			if ($billingArea)
+			{
+				$parameters->setParameterValue('billingAreaId', $billingArea->getId());
+			}
+
+			$zone = $commerceServices->getContext()->getZone();
+			if ($zone)
+			{
+				$parameters->setParameterValue('zone', $zone);
+			}
 		}
 		else
 		{
 			$parameters->setParameterValue('webStoreId', 0);
+			$parameters->setParameterValue('billingAreaId', 0);
+			$parameters->setParameterValue('zone', null);
 			$parameters->setParameterValue('displayPrices', false);
 			$parameters->setParameterValue('displayPricesWithTax', false);
 		}

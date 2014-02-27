@@ -21,14 +21,10 @@ class StoreResultInformation extends Information
 			->setLabel($i18nManager->trans('m.rbs.elasticsearch.admin.storeresult_storeindex', $ucf))
 			->setAllowedModelsNames(array('Rbs_Elasticsearch_StoreIndex'));
 
-		$model = $event->getApplicationServices()->getModelManager()->getModelByName('Rbs_Catalog_ProductList');
-		$allowedModelsNames = $model->getDescendantsNames();
-		array_unshift($allowedModelsNames, $model->getName());
-		$this->addInformationMeta('productListId', Property::TYPE_DOCUMENTID, false, null)
-			->setAllowedModelsNames($allowedModelsNames)
-			->setLabel($i18nManager->trans('m.rbs.catalog.admin.product_list_list', $ucf));
+		$this->addInformationMetaForDetailBlock('Rbs_Catalog_ProductList', $i18nManager);
 
-		$this->addTTL(0)->setLabel($i18nManager->trans('m.rbs.admin.admin.ttl', $ucf));
+		$this->addInformationMeta('useCurrentSectionProductList', Property::TYPE_BOOLEAN, false, false)
+			->setLabel($i18nManager->trans('m.rbs.catalog.admin.product_list_use_current', $ucf));
 
 		$this->addInformationMeta('contextualUrls', Property::TYPE_BOOLEAN, false, true)
 			->setLabel($i18nManager->trans('m.rbs.catalog.admin.product_list_contextual_urls', $ucf));
